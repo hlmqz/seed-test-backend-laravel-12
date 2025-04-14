@@ -17,6 +17,7 @@ class AppRequest extends FormRequest
 			'*.required' => 'El campo [:attribute] es requerido.',
 			'*.exists' => 'El campo [:attribute] como dependencia no existe previamente.',
 			'*.numeric'  => 'El campo [:attribute] debe ser un número válido',
+			'*.integer'  => 'El campo [:attribute] debe ser un número entero válido',
 			'*.email'    => 'El campo [:attribute] debe ser de formato de correo electrónico válido',
 			'*.date_format' => 'El campo [:attribute] debe ser un formato de fecha válido',
 			'*.min' => 'El campo [:attribute] debe ser un mínimo de :value',
@@ -33,5 +34,27 @@ class AppRequest extends FormRequest
 			'*.boolean' => 'El campo [:attribute] debe ser un valor de verdadero o falso.',
 		];
 	}
+
+//===================================================================================
+
+	public function closureUniqueCaseInsensitive(string $table, string $field, $omittedField = '')
+	{
+		return function($attribute, $val, $fail) use ($table, $field, $omittedField)
+		{
+			$attrs = [];
+			$query = \DB::table($table)->where(
+								\DB::raw(" lower({$field}) "),
+								\DB::raw(" lower('".$this->{$field}."')")
+							);
+
+			if($omittedField)
+				$query->where($omittedField, '!=', $this->{$omittedField});
+
+			if($query->exists())
+				$fail("El campo [".($this->attributes()[$attribute] ?? $attribute)."] ya existe, intente otro");
+
+		};
+	}
+
 
 }
