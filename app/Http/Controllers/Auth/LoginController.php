@@ -15,7 +15,11 @@ class LoginController extends Controller
 	public function read(Request $request)
 	{
 		$user = Auth::user();
-		return response()->json(['user' => Auth::user()]);
+		return response()->json([
+			'user' => Auth::user(),
+			'microtime' => (int)(microtime(true)*1000),
+			'lifetime' => config('session.lifetime')*60*1000,
+		]);
 	}
 
 //===================================================================================
