@@ -34,4 +34,14 @@ en el archivo `.env` y reemplazar los valores de conexión a la base de datos, d
 - en caso de ser producción, validar los valores en el .env correspondientes al dominio a usar.
 - en la base datos cree un registro de usuario con los valores que crea pertinente.
 
+### Pruebas Unitarias
+
+Tiene 3 pruebas a realizar:
+
+- Creación de un producto.
+- Respuesta de validación de datos.
+- Listar Productos.
+
+para ejecutar los test, basta con ejecutar el comando `php artisan test` y dará los resultados.
+  
 Fin.
